@@ -65,6 +65,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 	private GameModel07 game;
 	/** The Activity Context */
 	private Context context;
+	private TrianglePrism triPrism;
 	
 	/**
 	 * Instance the Cube object and set the Activity Context 
@@ -108,7 +109,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		lightPositionBuffer.put(lightPosition);
 		lightPositionBuffer.position(0);
 		
-		//
+		triPrism = new TrianglePrism();
 		cube = new Cube();
 		floor = new Plane();
 	}
@@ -154,8 +155,6 @@ public class PA07 extends GLSurfaceView implements Renderer {
 
 		gl.glViewport(0, 0, width, height); 	//Reset The Current Viewport
 		
-		setViewFromLeft(gl);
-
 		gl.glLoadIdentity(); 					//Reset The Modelview Matrix
 	}
 
@@ -172,11 +171,11 @@ public class PA07 extends GLSurfaceView implements Renderer {
 
 		
 		//setViewFromAvatar(gl);
-		setViewFromLeft(gl);
+		setMyView(gl);
 		
 		drawFloor(gl);
 		
-		drawFoes(gl);
+//		drawFoes(gl);
 		
 		drawAvatar(gl);
 		
@@ -226,7 +225,35 @@ public class PA07 extends GLSurfaceView implements Renderer {
 
 		gl.glMatrixMode(GL10.GL_MODELVIEW); 	//Select The Modelview Matrix
 	}
+
 	
+	private void setMyView(GL10 gl){
+		gl.glMatrixMode(GL10.GL_PROJECTION); 	//Select The Projection Matrix
+		gl.glLoadIdentity(); 					//Reset The Projection Matrix
+
+		// Set the properties of the camera 
+		GLU.gluPerspective(gl, 60.0f, width / height, 0.1f, 1000.0f);
+
+		float eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
+		eyeX = game.width / 2f;
+		eyeY = 5f;
+		eyeZ = 40f;
+
+		
+		centerX = game.avatar.pos[0];
+		centerY = game.avatar.pos[1];
+		centerZ = game.avatar.pos[2];
+
+		
+		// Point and aim the camera
+		GLU.gluLookAt(gl, 
+				     eyeX, eyeY, eyeZ,         		// eye position above Left of game board
+				      centerX, centerY, centerZ,	// target position at center of board
+				      0f, 1f, 0f);              	// up direction
+
+		gl.glMatrixMode(GL10.GL_MODELVIEW); 	//Select The Modelview Matrix
+	}
+
 	
 /*
  * View Methods which use information in the model to draw the objects on the screen
@@ -245,7 +272,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		//gl.glScalef(1f,2f,1f);
 		gl.glRotatef((float)calcHeading(f),0f,1f,0f);
 		cube.draw(gl, filter);
-		System.out.println("drawing foe:"+f.pos[0]+" "+f.pos[2]);
+//		System.out.println("drawing foe:"+f.pos[0]+" "+f.pos[2]);
 		gl.glPopMatrix();
 	}
 	
@@ -256,14 +283,17 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		return heading;
 	}
 	
+	float angle = 0;
 	private void drawAvatar(GL10 gl){
 		
 		gl.glPushMatrix();
 		gl.glTranslatef(game.avatar.pos[0],0f,game.avatar.pos[2]);
 		gl.glScalef(1f,1.5f,1f);
-		gl.glRotatef((float)calcHeading(game.avatar),0f,1f,0f);
-		cube.draw(gl, filter);
-		System.out.println("drawing avatar:"+game.avatar.pos[0]+" "+game.avatar.pos[2]);
+//		gl.glRotatef((float)calcHeading(game.avatar),0f,1f,0f);
+		angle++;
+		gl.glRotatef(angle,0f,1f,0f);
+		triPrism.draw(gl, filter);
+//		System.out.println("drawing avatar:"+game.avatar.pos[0]+" "+game.avatar.pos[2]);
 		gl.glPopMatrix();
 	}
 	
