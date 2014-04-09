@@ -133,7 +133,7 @@ public class TrianglePrism {
 						1f, 0f, // side 3
 						1f, 1f, 
 						0f, 1f, 
-						0f, 0f,
+						0f, 0f
 									};
 	
 	/**
@@ -316,7 +316,7 @@ public class TrianglePrism {
 	// list a new point for each entry in indices
 	// take the values from points according to the respective index
 	// from indices (can be used to shorten the vertices and normals definitions)
-	private float[] expandPoints(float[] points, byte[] indices) {
+	static float[] expandPoints(float[] points, byte[] indices) {
 		float[] redundantPoints = new float[indices.length * 3];
 		for (int i = 0; i < indices.length; i++) {
 			redundantPoints[i * 3 + 0] = points[indices[i] * 3 + 0];
