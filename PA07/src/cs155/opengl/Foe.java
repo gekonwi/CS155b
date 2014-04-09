@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Foe {
 	
-	public float dt=0.1f;
+	public float dt = 0.1f;
 	
 	public float speed;
 	public float[] vel = {0f,0f,1f};
