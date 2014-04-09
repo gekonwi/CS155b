@@ -124,34 +124,34 @@ public class Cube {
 	private float texture[] = {
 						//Mapping coordinates for the vertices
 						0.0f, 0.0f, 
-						0.0f, 1.0f, 
 						1.0f, 0.0f, 
-						1.0f, 1.0f,
-			
-						0.0f, 0.0f,
 						0.0f, 1.0f, 
-						1.0f, 0.0f,
 						1.0f, 1.0f,
 			
 						0.0f, 0.0f, 
-						0.0f, 1.0f, 
 						1.0f, 0.0f, 
+						0.0f, 1.0f, 
 						1.0f, 1.0f,
 			
 						0.0f, 0.0f, 
-						0.0f, 1.0f, 
 						1.0f, 0.0f, 
+						0.0f, 1.0f, 
 						1.0f, 1.0f,
 			
 						0.0f, 0.0f, 
-						0.0f, 1.0f, 
 						1.0f, 0.0f, 
+						0.0f, 1.0f, 
 						1.0f, 1.0f,
 			
 						0.0f, 0.0f, 
-						0.0f, 1.0f, 
 						1.0f, 0.0f, 
-						1.0f, 1.0f, 
+						0.0f, 1.0f, 
+						1.0f, 1.0f,
+			
+						0.0f, 0.0f, 
+						1.0f, 0.0f, 
+						0.0f, 1.0f, 
+						1.0f, 1.0f
 									};
 
 	/** The initial indices definition */

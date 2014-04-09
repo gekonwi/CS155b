@@ -158,7 +158,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		gl.glLoadIdentity(); 					//Reset The Modelview Matrix
 	}
 
-
+	private float angle = 0;
 	/**
 	 * Here we do our drawing
 	 */
@@ -175,9 +175,10 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		
 		drawFloor(gl);
 		
-//		drawFoes(gl);
+		angle += 0.2;
+		drawFoes(gl);
 		
-		drawAvatar(gl);
+//		drawAvatar(gl);
 		
 		game.update();
 		
@@ -237,7 +238,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		float eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
 		eyeX = game.width / 2f;
 		eyeY = 5f;
-		eyeZ = 40f;
+		eyeZ = game.height / 2f + 5;
 
 		
 		centerX = game.avatar.pos[0];
@@ -267,13 +268,27 @@ public class PA07 extends GLSurfaceView implements Renderer {
 
 	
 	private void drawFoe(GL10 gl, Foe f){
+		
+		// === draw body ===================
 		gl.glPushMatrix();
 		gl.glTranslatef(f.pos[0],0f,f.pos[2]);
 		//gl.glScalef(1f,2f,1f);
-		gl.glRotatef((float)calcHeading(f),0f,1f,0f);
+//		gl.glRotatef((float)calcHeading(f),0f,1f,0f);
+//		gl.glRotatef(angle,0f,1f,0f);
+		cube.draw(gl, filter);		
+//		
+		// === draw left arm ===================
+		gl.glPushMatrix();
+		gl.glTranslatef(0f, 1f, 0f);
+		gl.glRotatef(90f, 0f, 0f, 1f);
+		gl.glScalef(0.2f, 0.5f, 0.2f);
 		cube.draw(gl, filter);
-//		System.out.println("drawing foe:"+f.pos[0]+" "+f.pos[2]);
 		gl.glPopMatrix();
+		
+		
+		System.out.println("drawing foe:"+f.pos[0]+" "+f.pos[2]);
+		gl.glPopMatrix();
+				
 	}
 	
 	private double calcHeading(Foe f){
@@ -283,15 +298,13 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		return heading;
 	}
 	
-	float angle = 0;
 	private void drawAvatar(GL10 gl){
 		
 		gl.glPushMatrix();
 		gl.glTranslatef(game.avatar.pos[0],0f,game.avatar.pos[2]);
 		gl.glScalef(1f,1.5f,1f);
 //		gl.glRotatef((float)calcHeading(game.avatar),0f,1f,0f);
-		angle++;
-		gl.glRotatef(angle,0f,1f,0f);
+//		gl.glRotatef(angle,0f,1f,0f);
 		triPrism.draw(gl, filter);
 //		System.out.println("drawing avatar:"+game.avatar.pos[0]+" "+game.avatar.pos[2]);
 		gl.glPopMatrix();
