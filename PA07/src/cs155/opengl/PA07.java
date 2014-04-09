@@ -286,8 +286,8 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		gl.glPushMatrix();
 		gl.glTranslatef(f.pos[0], 0f, f.pos[2]);
 		// gl.glScalef(1f,2f,1f);
-		// gl.glRotatef((float)calcHeading(f),0f,1f,0f);
-		gl.glRotatef(foeAngle, 0f, 1f, 0f);
+		gl.glRotatef(calcHeading(f),0f,1f,0f);
+//		gl.glRotatef(foeAngle, 0f, 1f, 0f);
 		cube.draw(gl, filter);
 		
 		
@@ -312,13 +312,15 @@ public class PA07 extends GLSurfaceView implements Renderer {
 	private void drawArmParts(GL10 gl, float armWidth) {
 		float armLength = 0.1f;
 		float armParts = 10;
-		float partAngle = 90f / armParts;
-		long wingBeatMillis = 1000;
+		float maxPartAngle = 120f / armParts;
+		long wingBeatMillis = 2000;
 		
 		long passedMillis = System.currentTimeMillis() - startMillis;
-		
+		double cyclePi = Math.PI * passedMillis / wingBeatMillis;
+		float partAngle = maxPartAngle * (float) Math.sin(cyclePi);
 
-		gl.glRotatef(120f, 0f, 0f, 1f);		
+		gl.glRotatef(90f, 0f, 0f, 1f);
+//		gl.glRotatef(90f + partAngle, 0f, 0f, 1f);		
 		
 		for (int i = 0; i < armParts; i++) {
 			gl.glPushMatrix();
@@ -326,15 +328,18 @@ public class PA07 extends GLSurfaceView implements Renderer {
 			cube.draw(gl, filter);
 			gl.glPopMatrix();
 			gl.glTranslatef(0f, armLength, 0f);
-			gl.glRotatef(partAngle, 0f, 0f, 1f);
+			gl.glRotatef(partAngle, 1f, 0f, 0f);
 		}
 	}
 
-	private double calcHeading(Foe f) {
-		float x = f.pos[0];
-		float z = f.pos[2];
-		double heading = Math.atan2(z, x) / Math.PI * 180;
-		return heading;
+	private float calcHeading(Foe f) {
+		float x = f.vel[0];
+		float z = f.vel[2];
+		
+		System.out.println("length: " + (Math.sqrt(x * x + z * z)));
+		
+		double heading = Math.acos(x) / Math.PI * 180;
+		return (float) heading;
 	}
 
 	private void drawAvatar(GL10 gl) {

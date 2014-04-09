@@ -46,9 +46,9 @@ public class Foe {
 		float b = s1*vel[0] + c1*vel[2];
 		vel[0] = a;
 		vel[2] = b;
-//		pos[0] += vel[0]*dt;
+		pos[0] += vel[0]*dt;
 		//pos[1] += vel[1]*dt;
-//		pos[2] += vel[2]*dt;
+		pos[2] += vel[2]*dt;
 		
 		keepOnBoard();
 	}
