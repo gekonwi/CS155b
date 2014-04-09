@@ -33,6 +33,8 @@ public class PA07 extends GLSurfaceView implements Renderer {
 	
 	private float width, height;
 	
+	private float foeAngle = 0f;
+
 
 	
 	private int filter = 0;				//Which texture filter? ( NEW )
@@ -158,7 +160,6 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		gl.glLoadIdentity(); 					//Reset The Modelview Matrix
 	}
 
-	private float angle = 0;
 	/**
 	 * Here we do our drawing
 	 */
@@ -175,7 +176,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		
 		drawFloor(gl);
 		
-		angle += 0.2;
+//		angle += 0.2;
 		drawFoes(gl);
 		
 //		drawAvatar(gl);
@@ -227,6 +228,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		gl.glMatrixMode(GL10.GL_MODELVIEW); 	//Select The Modelview Matrix
 	}
 
+	private float eyeY = 5f;
 	
 	private void setMyView(GL10 gl){
 		gl.glMatrixMode(GL10.GL_PROJECTION); 	//Select The Projection Matrix
@@ -235,15 +237,16 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		// Set the properties of the camera 
 		GLU.gluPerspective(gl, 60.0f, width / height, 0.1f, 1000.0f);
 
-		float eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
+		
+		float eyeX, eyeZ, centerX, centerY, centerZ;
 		eyeX = game.width / 2f;
-		eyeY = 5f;
+//		eyeY = 5f;
 		eyeZ = game.height / 2f + 5;
 
 		
-		centerX = game.avatar.pos[0];
-		centerY = game.avatar.pos[1];
-		centerZ = game.avatar.pos[2];
+		centerX = game.width / 2f;;
+		centerY = 2f;
+		centerZ = game.height / 2f;
 
 		
 		// Point and aim the camera
@@ -274,7 +277,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		gl.glTranslatef(f.pos[0],0f,f.pos[2]);
 		//gl.glScalef(1f,2f,1f);
 //		gl.glRotatef((float)calcHeading(f),0f,1f,0f);
-//		gl.glRotatef(angle,0f,1f,0f);
+		gl.glRotatef(foeAngle, 0f, 1f, 0f);
 		cube.draw(gl, filter);		
 //		
 		// === draw left arm ===================
@@ -347,7 +350,13 @@ public class PA07 extends GLSurfaceView implements Renderer {
         	//Define an upper area of 10% on the screen
         	int upperArea = this.getHeight() / 10;
         	
-    
+        	if (Math.abs(dx) > Math.abs(dy))
+        		// right-left movement
+        		foeAngle += dx;
+        	else
+        		// up-down movement
+        		eyeY += dy * 0.1;
+        		
         
         //A press on the screen
         } else if(event.getAction() == MotionEvent.ACTION_UP) {
