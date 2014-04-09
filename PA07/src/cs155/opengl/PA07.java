@@ -29,7 +29,7 @@ import android.view.MotionEvent;
 public class PA07 extends GLSurfaceView implements Renderer {
 
 	private final long startMillis = System.currentTimeMillis();
-	
+
 	/** Cube instance */
 	private Cube cube;
 	private Plane floor;
@@ -121,26 +121,16 @@ public class PA07 extends GLSurfaceView implements Renderer {
 	 */
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// And there'll be light!
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, lightAmbientBuffer); // Setup
-																			// The
-																			// Ambient
-																			// Light
-																			// (
-																			// NEW
-																			// )
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, lightDiffuseBuffer); // Setup
-																			// The
-																			// Diffuse
-																			// Light
-																			// (
-																			// NEW
-																			// )
-		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, lightPositionBuffer); // Position
-																				// The
-																				// Light
-																				// (
-																				// NEW
-																				// )
+
+		// Setup The Ambient Light (NEW)
+		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, lightAmbientBuffer);
+		
+		// Setup The Diffuse Light (NEW)
+		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, lightDiffuseBuffer);
+
+		// Position The Light (NEW)
+		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_POSITION, lightPositionBuffer);
+
 		gl.glEnable(GL10.GL_LIGHT0); // Enable Light 0 ( NEW )
 
 		// Settings
@@ -281,19 +271,18 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		}
 	}
 
-	private void drawFoe(GL10 gl, Foe f) {		
+	private void drawFoe(GL10 gl, Foe f) {
 		// === draw body ===================
 		gl.glPushMatrix();
 		gl.glTranslatef(f.pos[0], 0f, f.pos[2]);
 		// gl.glScalef(1f,2f,1f);
-		gl.glRotatef(calcHeading(f),0f,1f,0f);
-//		gl.glRotatef(foeAngle, 0f, 1f, 0f);
+		gl.glRotatef(calcHeading(f), 0f, 1f, 0f);
+		// gl.glRotatef(foeAngle, 0f, 1f, 0f);
 		cube.draw(gl, filter);
-		
-		
+
 		float armWidth = 0.1f;
 		gl.glTranslatef(0f, 1f - armWidth, 0f);
-		
+
 		// === draw left arm ===================
 		gl.glPushMatrix();
 		drawArmParts(gl, armWidth);
@@ -303,7 +292,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		gl.glTranslatef(1f, 0f, armWidth);
 		gl.glRotatef(180f, 0f, 1f, 0f);
 		drawArmParts(gl, armWidth);
-		
+
 		// System.out.println("drawing foe:"+f.pos[0]+" "+f.pos[2]);
 		gl.glPopMatrix();
 
@@ -314,14 +303,14 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		float armParts = 10;
 		float maxPartAngle = 120f / armParts;
 		long wingBeatMillis = 2000;
-		
+
 		long passedMillis = System.currentTimeMillis() - startMillis;
 		double cyclePi = Math.PI * passedMillis / wingBeatMillis;
 		float partAngle = maxPartAngle * (float) Math.sin(cyclePi);
 
 		gl.glRotatef(90f, 0f, 0f, 1f);
-//		gl.glRotatef(90f + partAngle, 0f, 0f, 1f);		
-		
+		// gl.glRotatef(90f + partAngle, 0f, 0f, 1f);
+
 		for (int i = 0; i < armParts; i++) {
 			gl.glPushMatrix();
 			gl.glScalef(armWidth, armLength, armWidth);
@@ -333,13 +322,13 @@ public class PA07 extends GLSurfaceView implements Renderer {
 	}
 
 	private float calcHeading(Foe f) {
+		float startAngle = -90f;
+		
 		float x = f.vel[0];
 		float z = f.vel[2];
-		
-		System.out.println("length: " + (Math.sqrt(x * x + z * z)));
-		
-		double heading = Math.acos(x) / Math.PI * 180;
-		return (float) heading;
+
+		double heading = Math.atan2(-z, x) / Math.PI * 180f;
+		return (float) heading + startAngle;
 	}
 
 	private void drawAvatar(GL10 gl) {
