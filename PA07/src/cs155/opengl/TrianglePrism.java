@@ -44,38 +44,21 @@ public class TrianglePrism {
 	/** Our texture pointer */
 	private int[] textures = new int[3];
 
-	private float[] vertices = vertices();	
-	private float[] vertices() {
-		// define each point in space only once
-		float vertices[] = {
-				0f, 0f, 0f,		// v0
-				0f, 0f, -1f,	// v1
-				1f, 0f, -1f,	// v2
-				0f, 1f, 0f,		// v3
-				0f, 1f, -1f,	// v4
-				1f, 1f, -1f		// v5
-		};
-		
-		// referring to the non redundant vertices inside this method
-		// cause the repetition of verices only if they are on a different face
-		// (will require a different normal)
-		byte indices[] = {
-				0, 1, 2,	// bottom
-				3, 5, 4, 	// top
-				0, 2, 5, 3,	// side 1
-				0, 3, 4, 1,	// side 2
-				1, 4, 5, 2	// side 3
-		};
-		
-		return expandPoints(vertices, indices);
-	}	
+	private float[] vertices = {
+			0f, 0f, 0f,		// v0
+			0f, 0f, -1f,	// v1
+			1f, 0f, -1f,	// v2
+			0f, 1f, 0f,		// v3
+			0f, 1f, -1f,	// v4
+			1f, 1f, -1f		// v5
+	};	
 		
 	private byte[] indices = {
-			0, 1, 2,				// bottom
-			3, 4, 5, 				// top
-			6, 7, 8, 6,	8, 9,		// side 1
-			10, 11, 12, 10,	12, 13,	// side 2
-			14, 15, 16, 14, 16, 17	// side 3
+			0, 1, 2,			// bottom
+			3, 5, 4, 			// top
+			0, 3, 5, 0,	5, 2,	// right side
+			0, 3, 4, 0,	4, 1,	// left side
+			1, 4, 5, 1, 5, 2	// back side
 			
 	};
 	
@@ -87,17 +70,17 @@ public class TrianglePrism {
 		float normals[] = {
 			0f, -1f, 0f,	// bottom
 			0f, 1f, 0f,		// top
-			s1, 0f, s1,		// side 1
-			-1f, 0f, 0f,	// side 2
-			0f, 0f, -1f		// side 3
+			s1, 0f, s1,		// right side
+			-1f, 0f, 0f,	// left side
+			0f, 0f, -1f		// back side
 		};
 
 		byte indices[] = {
 			0, 0, 0,	// bottom
 			1, 1, 1,	// top
-			2, 2, 2, 2,	// side 1
-			3, 3, 3, 3,	// side 2
-			4, 4, 4, 4	// side 3
+			2, 2, 2, 2,	// right side
+			3, 3, 3, 3,	// left side
+			4, 4, 4, 4	// back side
 		};
 		
 		return expandPoints(normals, indices);
@@ -105,11 +88,11 @@ public class TrianglePrism {
 
 	/** The initial texture coordinates (u, v) */	
 	private float texture[] = {
-//			0, 1, 2,	// bottom
-//			3, 5, 4, 	// top
-//			0, 2, 5, 3,	// side 1
-//			0, 3, 4, 1,	// side 2
-//			1, 4, 5, 2	// side 3
+//			0, 1, 2,			// bottom
+//			3, 5, 4, 			// top
+//			0, 3, 5, 0,	5, 2,	// right side
+//			0, 3, 4, 0,	4, 1,	// left side
+//			1, 4, 5, 1, 5, 2	// back side
 			
 			//Mapping coordinates for the vertices
 						1f, 0f,	// bottom
@@ -118,22 +101,7 @@ public class TrianglePrism {
 			
 						0f, 0f,	// top
 						1f, 1f, 
-						0f, 1f,
-			
-						0f, 0f, // side 1
-						1f, 0f, 
-						1f, 1f, 
-						0f, 1f,
-			
-						1f, 0f, // side 2
-						1f, 1f, 
-						0f, 1f, 
-						0f, 0f,
-			
-						1f, 0f, // side 3
-						1f, 1f, 
-						0f, 1f, 
-						0f, 0f
+						0f, 1f				
 									};
 	
 	/**
@@ -317,14 +285,14 @@ public class TrianglePrism {
 	// take the values from points according to the respective index
 	// from indices (can be used to shorten the vertices and normals definitions)
 	static float[] expandPoints(float[] points, byte[] indices) {
-		float[] redundantPoints = new float[indices.length * 3];
+		float[] expandedPoints = new float[indices.length * 3];
 		for (int i = 0; i < indices.length; i++) {
-			redundantPoints[i * 3 + 0] = points[indices[i] * 3 + 0];
-			redundantPoints[i * 3 + 1] = points[indices[i] * 3 + 1];
-			redundantPoints[i * 3 + 2] = points[indices[i] * 3 + 2];
+			expandedPoints[i * 3 + 0] = points[indices[i] * 3 + 0];
+			expandedPoints[i * 3 + 1] = points[indices[i] * 3 + 1];
+			expandedPoints[i * 3 + 2] = points[indices[i] * 3 + 2];
 		}
 		
-		return redundantPoints;
+		return expandedPoints;
 	}
 
 }

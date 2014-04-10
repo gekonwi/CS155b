@@ -45,35 +45,35 @@ public class Cube {
 	/** The initial vertex definition */	
 	private float vertices[] = {
 						//Vertices according to faces
-						0.0f, 0.0f, 1.0f, //front  v0,v1,v2,v3
-						1.0f, 0.0f, 1.0f, 	//v1
-						0.0f, 1.0f, 1.0f, 	//v2
-						1.0f, 1.0f, 1.0f, 	//v3
+						0f, 0f, 1f, //front  v0,v1,v2,v3
+						1f, 0f, 1f, 	//v1
+						0f, 1f, 1f, 	//v2
+						1f, 1f, 1f, 	//v3
 			
-						1.0f, 0.0f, 1.0f, 	// right: v1=v4
-						1.0f, 0.0f, 0.0f,   // 
-						1.0f, 1.0f, 1.0f, 
-						1.0f, 1.0f, 0.0f,
+						1f, 0f, 1f, 	// right: v1=v4
+						1f, 0f, 0f,   // 
+						1f, 1f, 1f, 
+						1f, 1f, 0f,
 			
-						1.0f, 0.0f, 0.0f, 
-						0.0f, 0.0f, 0.0f, 
-						1.0f, 1.0f, 0.0f, 
-						0.0f, 1.0f, 0.0f,
+						1f, 0f, 0f, 
+						0f, 0f, 0f, 
+						1f, 1f, 0f, 
+						0f, 1f, 0f,
 			
-						0.0f, 0.0f, 0.0f, 
-						0.0f, 0.0f, 1.0f, 
-						0.0f, 1.0f, 0.0f, 
-						0.0f, 1.0f, 1.0f,
+						0f, 0f, 0f, 
+						0f, 0f, 1f, 
+						0f, 1f, 0f, 
+						0f, 1f, 1f,
 			
-						0.0f, 0.0f, 0.0f, 
-						1.0f, 0.0f, 0.0f, 
-						0.0f, 0.0f, 1.0f, 
-						1.0f, 0.0f, 1.0f,
+						0f, 0f, 0f, 
+						1f, 0f, 0f, 
+						0f, 0f, 1f, 
+						1f, 0f, 1f,
 			
-						0.0f, 1.0f, 1.0f, 
-						1.0f, 1.0f, 1.0f, 
-						0.0f, 1.0f, 0.0f, 
-						1.0f, 1.0f, 0.0f, 
+						0f, 1f, 1f, 
+						1f, 1f, 1f, 
+						0f, 1f, 0f, 
+						1f, 1f, 0f, 
 											};
 
 	/** 
@@ -123,35 +123,35 @@ public class Cube {
 	/** The initial texture coordinates (u, v) */	
 	private float texture[] = {
 						//Mapping coordinates for the vertices
-						0.0f, 0.0f, 
-						1.0f, 0.0f, 
-						0.0f, 1.0f, 
-						1.0f, 1.0f,
+						0f, 0f, 
+						1f, 0f, 
+						0f, 1f, 
+						1f, 1f,
 			
-						0.0f, 0.0f, 
-						1.0f, 0.0f, 
-						0.0f, 1.0f, 
-						1.0f, 1.0f,
+						0f, 0f, 
+						1f, 0f, 
+						0f, 1f, 
+						1f, 1f,
 			
-						0.0f, 0.0f, 
-						1.0f, 0.0f, 
-						0.0f, 1.0f, 
-						1.0f, 1.0f,
+						0f, 0f, 
+						1f, 0f, 
+						0f, 1f, 
+						1f, 1f,
 			
-						0.0f, 0.0f, 
-						1.0f, 0.0f, 
-						0.0f, 1.0f, 
-						1.0f, 1.0f,
+						0f, 0f, 
+						1f, 0f, 
+						0f, 1f, 
+						1f, 1f,
 			
-						0.0f, 0.0f, 
-						1.0f, 0.0f, 
-						0.0f, 1.0f, 
-						1.0f, 1.0f,
+						0f, 0f, 
+						1f, 0f, 
+						0f, 1f, 
+						1f, 1f,
 			
-						0.0f, 0.0f, 
-						1.0f, 0.0f, 
-						0.0f, 1.0f, 
-						1.0f, 1.0f
+						0f, 0f, 
+						1f, 0f, 
+						0f, 1f, 
+						1f, 1f
 									};
 
 	/** The initial indices definition */
