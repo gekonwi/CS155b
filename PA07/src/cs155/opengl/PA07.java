@@ -148,6 +148,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 
 		// Load the texture for the cube once during Surface creation
 		cube.loadGLTexture(gl, this.context, R.drawable.crate);
+		triPrism.loadGLTexture(gl, this.context, R.drawable.icon);
 		floor.loadGLTexture(gl, this.context, R.drawable.tiles);
 	}
 
