@@ -125,15 +125,15 @@ public class TrianglePrism {
 						1f, 0f, 
 						0f, 0f,
 			
-						1f, 0f, // side 2
-						1f, 1f, 
-						0f, 1f, 
+						1f, 1f, // side 2
+						1f, 0f,
 						0f, 0f,
+						0f, 1f,
 			
-						1f, 0f, // side 3
-						1f, 1f, 
-						0f, 1f, 
-						0f, 0f
+						1f, 1f, // side 3
+						1f, 0f,
+						0f, 0f,
+						0f, 1f
 									};
 	
 	/**
