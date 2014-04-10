@@ -95,13 +95,28 @@ public class TrianglePrism {
 //			1, 4, 5, 1, 5, 2	// back side
 			
 			//Mapping coordinates for the vertices
-						1f, 0f,	// bottom
-						1f, 1f, 
-						0f, 1f, 
-			
-						0f, 0f,	// top
-						1f, 1f, 
-						0f, 1f				
+			1f, 0f,	// bottom
+			1f, 1f, 
+			0f, 1f, 
+
+			0f, 0f,	// top
+			1f, 1f, 
+			0f, 1f,
+
+			0f, 1f, // side 1
+			1f, 1f, 
+			1f, 0f, 
+			0f, 0f,
+
+			1f, 0f, // side 2
+			1f, 1f, 
+			0f, 1f, 
+			0f, 0f,
+
+			1f, 0f, // side 3
+			1f, 1f, 
+			0f, 1f, 
+			0f, 0f
 									};
 	
 	/**
