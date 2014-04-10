@@ -227,9 +227,9 @@ public class PA07 extends GLSurfaceView implements Renderer {
 	}
 
 	private void setViewAtAvatar(GL10 gl) {
-		eyeX = game.width / 2f;
+		eyeX = game.avatar.pos[0];
 		eyeY = 10f;
-		eyeZ = game.height / 2f + 20;
+		eyeZ = game.avatar.pos[2] + 10;
 
 		centerX = game.avatar.pos[0];
 		centerY = 2f;
