@@ -35,8 +35,8 @@ public class PA07 extends GLSurfaceView implements Renderer {
 	private Plane floor;
 
 	private float width, height;
+	private float eyeX, eyeY, eyeZ, centerX, centerY, centerZ;
 
-	private float foeAngle = 0f;
 
 	private int filter = 0; // Which texture filter? ( NEW )
 
@@ -124,7 +124,7 @@ public class PA07 extends GLSurfaceView implements Renderer {
 
 		// Setup The Ambient Light (NEW)
 		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_AMBIENT, lightAmbientBuffer);
-		
+
 		// Setup The Diffuse Light (NEW)
 		gl.glLightfv(GL10.GL_LIGHT0, GL10.GL_DIFFUSE, lightDiffuseBuffer);
 
@@ -178,79 +178,72 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		gl.glLoadIdentity();
 
-		// setViewFromAvatar(gl);
-		setMyView(gl);
+		setViewAtAvatar(gl);;
 
 		drawFloor(gl);
 
-		// angle += 0.2;
 		drawFoes(gl);
 
-		// drawAvatar(gl);
+		drawAvatar(gl);
 
 		game.update();
 
 	}
 
 	private void setViewFromAvatar(GL10 gl) {
-		gl.glMatrixMode(GL10.GL_PROJECTION); // Select The Projection Matrix
-		gl.glLoadIdentity(); // Reset The Projection Matrix
+		eyeX = game.avatar.pos[0];
+		eyeY = game.avatar.pos[1];
+		eyeZ = game.avatar.pos[2];
 
-		// Set the properties of the camera
-		GLU.gluPerspective(gl, 60.0f, width / height, 0.1f, 1000.0f);
-
-		// Point and aim the camera
-		float x = game.avatar.pos[0];
-		float y = game.avatar.pos[1];
-		float z = game.avatar.pos[2];
-
-		float vx = game.avatar.vel[0];
-		float vy = game.avatar.vel[1];
-		float vz = game.avatar.vel[2];
-
-		GLU.gluLookAt(gl, x, y + 2f, z, // eye position
-				x + vx, y + vy + 2f, z + vz, // target position
-				0f, 1f, 0f); // up direction
-
-		gl.glMatrixMode(GL10.GL_MODELVIEW); // Select The Modelview Matrix
-
+		centerX = eyeX + game.avatar.vel[0];
+		centerY = eyeY + game.avatar.vel[1];
+		centerZ = eyeZ + game.avatar.vel[2];
+		
+		updateCam(gl);
 	}
 
 	private void setViewFromLeft(GL10 gl) {
-		gl.glMatrixMode(GL10.GL_PROJECTION); // Select The Projection Matrix
-		gl.glLoadIdentity(); // Reset The Projection Matrix
+		eyeX = -20f;
+		eyeY = 40f;
+		eyeZ = game.width / 2;
 
-		// Set the properties of the camera
-		GLU.gluPerspective(gl, 60.0f, width / height, 0.1f, 1000.0f);
-
-		// Point and aim the camera
-		GLU.gluLookAt(gl, -20f, 40f, game.width / 2, // eye position above Left
-														// of game board
-				game.width / 2f, 0f, game.height / 2f, // target position at
-														// center of board
-				0f, 1f, 0f); // up direction
-
-		gl.glMatrixMode(GL10.GL_MODELVIEW); // Select The Modelview Matrix
+		centerX = game.width / 2f;
+		centerY = 0f;
+		centerZ = game.height / 2f;
+		
+		updateCam(gl);
 	}
 
-	private float eyeY = 5f;
-
 	private void setMyView(GL10 gl) {
-		gl.glMatrixMode(GL10.GL_PROJECTION); // Select The Projection Matrix
-		gl.glLoadIdentity(); // Reset The Projection Matrix
-
-		// Set the properties of the camera
-		GLU.gluPerspective(gl, 60.0f, width / height, 0.1f, 1000.0f);
-
-		float eyeX, eyeZ, centerX, centerY, centerZ;
 		eyeX = game.width / 2f;
-		// eyeY = 5f;
+		// eyeY is changed by touch events;
 		eyeZ = game.height / 2f + 5;
 
 		centerX = game.width / 2f;
-		;
 		centerY = 2f;
 		centerZ = game.height / 2f;
+		
+		updateCam(gl);
+	}
+
+	private void setViewAtAvatar(GL10 gl) {
+		eyeX = game.width / 2f;
+		eyeY = 10f;
+		eyeZ = game.height / 2f + 20;
+
+		centerX = game.avatar.pos[0];
+		centerY = 2f;
+		centerZ = game.avatar.pos[2];
+		
+		updateCam(gl);
+	}
+
+	private void updateCam(GL10 gl) {
+		gl.glMatrixMode(GL10.GL_PROJECTION); // Select The Projection Matrix
+		gl.glLoadIdentity(); // Reset The Projection Matrix
+
+		// Set the properties of the camera
+		GLU.gluPerspective(gl, 60.0f, width / height, 0.1f, 1000.0f);
 
 		// Point and aim the camera
 		GLU.gluLookAt(gl, eyeX, eyeY, eyeZ, // eye position above Left of game
@@ -261,6 +254,8 @@ public class PA07 extends GLSurfaceView implements Renderer {
 		gl.glMatrixMode(GL10.GL_MODELVIEW); // Select The Modelview Matrix
 	}
 
+	
+	
 	/*
 	 * View Methods which use information in the model to draw the objects on
 	 * the screen
@@ -285,27 +280,27 @@ public class PA07 extends GLSurfaceView implements Renderer {
 
 		// === draw left arm ===================
 		gl.glPushMatrix();
-		drawArmParts(gl, armWidth);
+		drawArmParts(gl, f, armWidth);
 		gl.glPopMatrix();
 
 		// === draw right arm ===================
 		gl.glTranslatef(1f, 0f, armWidth);
 		gl.glRotatef(180f, 0f, 1f, 0f);
-		drawArmParts(gl, armWidth);
+		drawArmParts(gl, f, armWidth);
 
 		// System.out.println("drawing foe:"+f.pos[0]+" "+f.pos[2]);
 		gl.glPopMatrix();
 
 	}
 
-	private void drawArmParts(GL10 gl, float armWidth) {
+	private void drawArmParts(GL10 gl, Foe foe, float armWidth) {
 		float armLength = 0.1f;
 		float armParts = 10;
 		float maxPartAngle = 120f / armParts;
-		long wingBeatMillis = 2000;
+		float armSwingMillis = 2000f / foe.speed;
 
 		long passedMillis = System.currentTimeMillis() - startMillis;
-		double cyclePi = Math.PI * passedMillis / wingBeatMillis;
+		double cyclePi = Math.PI * passedMillis / armSwingMillis;
 		float partAngle = maxPartAngle * (float) Math.sin(cyclePi);
 
 		gl.glRotatef(90f, 0f, 0f, 1f);
@@ -322,24 +317,19 @@ public class PA07 extends GLSurfaceView implements Renderer {
 	}
 
 	private float calcHeading(Foe f) {
-		float startAngle = -90f;
-		
 		float x = f.vel[0];
 		float z = f.vel[2];
 
 		double heading = Math.atan2(-z, x) / Math.PI * 180f;
-		return (float) heading + startAngle;
+		return (float) heading + f.getStartAngle();
 	}
 
-	private void drawAvatar(GL10 gl) {
-
+	private void drawAvatar(GL10 gl) {		
 		gl.glPushMatrix();
 		gl.glTranslatef(game.avatar.pos[0], 0f, game.avatar.pos[2]);
 		gl.glScalef(1f, 1.5f, 1f);
-		// gl.glRotatef((float)calcHeading(game.avatar),0f,1f,0f);
-		// gl.glRotatef(angle,0f,1f,0f);
+		gl.glRotatef(calcHeading(game.avatar), 0f, 1f, 0f);
 		triPrism.draw(gl, filter);
-		// System.out.println("drawing avatar:"+game.avatar.pos[0]+" "+game.avatar.pos[2]);
 		gl.glPopMatrix();
 	}
 
@@ -368,14 +358,13 @@ public class PA07 extends GLSurfaceView implements Renderer {
 			float dx = x - oldX;
 			float dy = y - oldY;
 			// Define an upper area of 10% on the screen
-			int upperArea = this.getHeight() / 10;
 
 			if (Math.abs(dx) > Math.abs(dy))
 				// right-left movement
-				foeAngle += dx;
+				game.avatar.rotateBy(dx / 100f);
 			else
 				// up-down movement
-				eyeY += dy * 0.1;
+				game.avatar.speed += -dy * 0.1;
 
 			// A press on the screen
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {

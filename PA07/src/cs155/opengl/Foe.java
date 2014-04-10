@@ -14,41 +14,52 @@ public class Foe {
 	public float[] vel = { 0f, 0f, 1f };
 	public float[] pos = { 0f, 0f, 0f };
 
-	private float dt = 0.1f;
-	// private float speed;
+	public float speed;
+
+	private long lastUpdateMillis = System.currentTimeMillis();
 
 	private Random rand = new Random();
 	private GameModel07 game;
+	private boolean freeWill;
+	
+	private final float startAngle;
 
-	public Foe(float speed, float xpos, float zpos, GameModel07 game) {
+	public Foe(boolean freeWill, float speed, float xpos, float zpos,
+			GameModel07 game, float startAngle) {
+		this.startAngle = startAngle;
+		
 		this.game = game;
+		
+		this.speed = speed;
+		this.freeWill = freeWill;
 		this.pos[0] = xpos;
 		this.pos[2] = zpos;
-		// float a = (rand.nextFloat()-0.5f)*2;
-		// float b = (rand.nextFloat()-0.5f)*2;
-		// float c = (float)(Math.sqrt(a*a+b*b));
-		//
-		// // look out for the theoretical case of c==0
-		// if (c==0){a=b=1; c= (float)Math.sqrt(2);}
-		// vel[0] = a/c*speed;
-		// vel[2] = b/c*speed;
 
 		double angleDif = rand.nextDouble() * 2 * Math.PI;
 		rotateBy(angleDif);
+	}
+
+	public float getStartAngle() {
+		return startAngle;
 	}
 
 	/**
 	 * change the velocity slightly and uses it to update the position
 	 */
 	public void update() {
-		// generate angle (in radians) between -s and s degrees
-		double angleDif = rand.nextGaussian() * 2 * Math.PI / 90f;
-		// if (Math.abs(r)< 0.1) r=0f; // this can smooth out the ride!
-		rotateBy(angleDif);
+		long currentTimeMillis = System.currentTimeMillis();
+		long dt = currentTimeMillis - lastUpdateMillis;
+		lastUpdateMillis = currentTimeMillis;
+		float velFactor = ((float) dt) / 1000f * speed;
 
-		pos[0] += vel[0] * dt;
-		// pos[1] += vel[1]*dt;
-		pos[2] += vel[2] * dt;
+		if (freeWill) {
+			// generate angle (in radians)
+			double angleDif = rand.nextGaussian() * velFactor / 5f;
+			rotateBy(angleDif);
+		}
+			
+		pos[0] += vel[0] * velFactor;
+		pos[2] += vel[2] * velFactor;
 
 		keepOnBoard();
 	}
@@ -58,7 +69,7 @@ public class Foe {
 	 * @param angleDif
 	 *            in radians
 	 */
-	private void rotateBy(double angleDif) {
+	public void rotateBy(double angleDif) {
 		float c1 = (float) Math.cos(angleDif);
 		float s1 = (float) Math.sin(angleDif);
 		float a = c1 * vel[0] - s1 * vel[2];
